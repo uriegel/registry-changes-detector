@@ -2,9 +2,16 @@
   "name": "registry-changes-detector",
   "version": "1.0.0",
   "description": "A node.js addon to detect changes in Windows Registry",
-  "main": "index.js",
+  "main": "dev/index.js",
+  "gypfile": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dev/index.js",
+    "debug": "node --nolazy --inspect-brk=9229 dev/index.js",
+    "build:dev": "node-gyp build --debug",
+    "build": "node-gyp build",
+    "rebuild:dev": "node-gyp rebuild --debug",
+    "rebuild": "node-gyp rebuild",
+    "clean": "node-gyp clean"
   },
   "repository": {
     "type": "git",
@@ -18,5 +25,8 @@
   "homepage": "https://github.com/uriegel/registry-changes-detector#readme",
   "dependencies": {
     "event-source-base": "^1.0.1"
+  },
+  "devDependencies": {
+    "bindings": "^1.5.0"
   }
 }

@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+     "configurations": [
+         {
+             "name": "Launch C++",
+             "type": "cppvsdbg",
+             "request": "launch",
+             "program": "node",
+             "args": [ "${workspaceFolder}/dev/index.js" ],
+             "stopAtEntry": false,
+             "cwd": "${workspaceFolder}",
+             "environment": [],
+             "externalConsole": false
+         },
+         {
+            "name": "Launch javascript",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "args": [ "${workspaceFolder}/dev/index.js" ],
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script", "debug"
+            ],
+            "port": 9229
+        }
+    ]
+ }
