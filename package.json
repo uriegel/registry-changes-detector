@@ -1,0 +1,22 @@
+{
+  "name": "registry-changes-detector",
+  "version": "1.0.0",
+  "description": "A node.js addon to detect changes in Windows Registry",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uriegel/registry-changes-detector.git"
+  },
+  "author": "Uwe Riegel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uriegel/registry-changes-detector/issues"
+  },
+  "homepage": "https://github.com/uriegel/registry-changes-detector#readme",
+  "dependencies": {
+    "event-source-base": "^1.0.1"
+  }
+}
