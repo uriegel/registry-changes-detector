@@ -2,7 +2,7 @@
   "name": "registry-changes-detector",
   "version": "1.2.0",
   "description": "A node.js addon to detect changes in Windows Registry",
-  "main": "dev/index.js",
+  "main": "./build/Release/registry-changes-detector",
   "gypfile": true,
   "scripts": {
     "start": "node dev/index.js",
