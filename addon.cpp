@@ -1,6 +1,6 @@
 #include <napi.h>
 #include <thread>
-#include "event-source-base.h"
+#include <event-source-base.h>
 #include "wstring.h"
 #include "registry.h"
 using namespace Napi;
