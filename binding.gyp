@@ -7,7 +7,7 @@
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",
-            "node_modules/event-source-base"
+            "./node_modules/event-source-base"
         ],
         'dependencies': ["<!(node -p \"require('node-addon-api').gyp\")"],
         "cflags": ["-Wall", "-std=c++17"],
