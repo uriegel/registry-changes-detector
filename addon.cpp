@@ -47,6 +47,11 @@ public:
         key = 0;
         Dispose();
     }
+    DWORD GetDWord() {
+        auto new_value = GetNewDWordValue(key, valueName);
+        value = new_value;
+        return value;
+    }
 private:
     uintptr_t key{0};
     wstring valueName;
@@ -65,9 +70,16 @@ Value Unregister(const CallbackInfo& info) {
     return info.Env().Undefined();
 }
 
+Number GetDWord(const CallbackInfo& info) {
+    auto detector = reinterpret_cast<RegistryChangesDetector*>(static_cast<uintptr_t>(info[0].As<Number>().DoubleValue()));
+    auto value = detector->GetDWord();
+    return Number::New(info.Env(), value);
+}
+
 Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "register"), Function::New(env, Register));
     exports.Set(String::New(env, "unregister"), Function::New(env, Unregister));
+    exports.Set(String::New(env, "getDWord"), Function::New(env, GetDWord));
     return exports;
 }
 

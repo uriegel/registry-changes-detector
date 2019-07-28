@@ -10,6 +10,9 @@ const eventSource = addon.register({
     console.log(`from callback: ${n}`)    
 })
 
+const value = addon.getDWord(eventSource)
+console.log(`initial: ${value}`)    
+
 setTimeout(() => {
     console.log("Time is out!")
     addon.unregister(eventSource)
