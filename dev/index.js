@@ -1,9 +1,16 @@
 const addon = require('bindings')('registry-changes-detector')
 
-const eventSource = addon.register(n => {
+const eventSource = addon.register({
+        key: "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+        value: "SystemUsesLightTheme",
+        type: "number"
+    }, n => {
     console.log(`from callback: ${n}`)    
 })
 
-setTimeout(() => addon.unregister(eventSource), 20000)
-console.log('Event Source')
+setTimeout(() => {
+    console.log("Time is out!")
+    addon.unregister(eventSource)
+}, 30000)
+
 

@@ -1,45 +1,60 @@
 #include <napi.h>
 #include <thread>
 #include "event-source-base.h"
+#include "wstring.h"
+#include "registry.h"
 using namespace Napi;
 using namespace EventSourceBase;
 using namespace std;
 
 class RegistryChangesDetector : public EventSourceBase {
 public:
-    RegistryChangesDetector(const Napi::Function& callback) 
+    RegistryChangesDetector(const Napi::Object& arg, const Napi::Function& callback) 
     : EventSourceBase(callback)
-    {}
+    {
+        auto keyStr = arg.Get("key").As<WString>().WValue();
+        valueName = arg.Get("value").As<WString>().WValue();
+        auto type = arg.Get("type").As<WString>().WValue();
+        auto pos = keyStr.find(L"\\");
+        auto mainKeyStr = keyStr.substr(0, pos);
+        auto subKey = keyStr.substr(pos + 1);
+        key = OpenKey(mainKeyStr, subKey);
+    }
+    ~RegistryChangesDetector() { CloseKey(key); }
     void OnEvent() override {
         HandleScope scope(callback.Env());
         vector<napi_value> args;
-        args.push_back(Number::New(callback.Env(), state));
+        args.push_back(Number::New(callback.Env(), value));
         callback.Call(args);
     }
     void Start() {
         Initialize();
         thread thread([this] {
-            Sleep(2000);
-            while (isRunning)
-            {
-                state++;
-                SendEvent();
-                Sleep(2000);
+            while (true) {
+                if (!WaitForChanges(key))
+                    break;
+                auto new_value = GetNewDWordValue(key, valueName);
+                if (new_value != value) {
+                    value = new_value;
+                    SendEvent();
+                }
             }
         });
         thread.detach();        
     }
     void Stop() {
+        CloseKey(key);
+        key = 0;
         Dispose();
-        isRunning = false;
     }
 private:
-    int state{0};
-    bool isRunning{true};
+    uintptr_t key{0};
+    wstring valueName;
+    DWORD value{0};
 };
 
 Value Register(const CallbackInfo& info) {
-    auto detector = new RegistryChangesDetector(info[0].As<Function>());
+    auto detector = new RegistryChangesDetector(info[0].As<Object>(), info[1].As<Function>());
     detector->Start();
     return Number::New(info.Env(), static_cast<double>(reinterpret_cast<uintptr_t>(detector)));
 }

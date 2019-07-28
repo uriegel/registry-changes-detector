@@ -3,6 +3,7 @@
         "target_name": "registry-changes-detector",
         "sources": [ 
             'addon.cpp',
+            'registry.cpp'
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",
