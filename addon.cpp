@@ -33,6 +33,8 @@ public:
             while (true) {
                 if (!WaitForChanges(key))
                     break;
+                if (key == 0)
+                    break;
                 auto new_value = GetNewDWordValue(key, valueName);
                 if (new_value != value) {
                     value = new_value;
@@ -43,8 +45,9 @@ public:
         thread.detach();        
     }
     void Stop() {
-        CloseKey(key);
+        auto keyToClose = key;
         key = 0;
+        CloseKey(keyToClose);
         Dispose();
     }
     DWORD GetDWord() {
