@@ -11,6 +11,10 @@ const eventSource = addon.register({
 })
 
 const value = addon.getDWord(eventSource)
+
+
+const defvalue = addon.getDWord(eventSource, 234)
+
 console.log(`initial: ${value}`)    
 
 setTimeout(() => {

@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/node_modules/node-addon-api/src/**",
-                "${workspaceFolder}/node_modules/event-source-base/**"
+                "${workspaceFolder}/node_modules/event-source-base/**",
+                "${workspaceFolder}/node_modules/event-source-base"
             ],
             "defines": [
                 "_DEBUG",

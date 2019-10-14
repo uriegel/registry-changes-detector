@@ -35,7 +35,7 @@ public:
                     break;
                 if (key == 0)
                     break;
-                auto new_value = GetNewDWordValue(key, valueName);
+                auto new_value = GetNewDWordValue(key, valueName, 0);
                 if (new_value != value) {
                     value = new_value;
                     SendEvent();
@@ -50,8 +50,8 @@ public:
         CloseKey(keyToClose);
         Dispose();
     }
-    DWORD GetDWord() {
-        auto new_value = GetNewDWordValue(key, valueName);
+    DWORD GetDWord(DWORD defaultValue) {
+        auto new_value = GetNewDWordValue(key, valueName, defaultValue);
         value = new_value;
         return value;
     }
@@ -74,8 +74,9 @@ Value Unregister(const CallbackInfo& info) {
 }
 
 Number GetDWord(const CallbackInfo& info) {
+    auto default = info.Length() > 1 ? info[1].As<Number>().Uint32Value() : 0;
     auto detector = reinterpret_cast<RegistryChangesDetector*>(static_cast<uintptr_t>(info[0].As<Number>().DoubleValue()));
-    auto value = detector->GetDWord();
+    auto value = detector->GetDWord(default);
     return Number::New(info.Env(), value);
 }
 

@@ -18,9 +18,9 @@ void CloseKey(uintptr_t handle) {
         RegCloseKey(key);
 }
 
-unsigned int GetNewDWordValue(uintptr_t handle, const wstring& valueName) {
+unsigned int GetNewDWordValue(uintptr_t handle, const wstring& valueName, unsigned int defaultValue) {
     auto key = reinterpret_cast<HKEY>(handle);
-    DWORD value{0};
+    DWORD value{defaultValue};
     DWORD cbData = sizeof(DWORD);
     RegQueryValueExW(key, valueName.c_str(), nullptr, nullptr, (LPBYTE)&value, &cbData);
     return value;
