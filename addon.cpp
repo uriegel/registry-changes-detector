@@ -2,6 +2,7 @@
 #include <thread>
 #include <event-source-base.h>
 #include "wstring.h"
+
 #include "registry.h"
 using namespace Napi;
 using namespace EventSourceBase;
@@ -50,7 +51,7 @@ public:
         CloseKey(keyToClose);
         Dispose();
     }
-    DWORD GetDWord(DWORD defaultValue) {
+    unsigned int GetDWord(unsigned int defaultValue) {
         auto new_value = GetNewDWordValue(key, valueName, defaultValue);
         value = new_value;
         return value;
@@ -58,26 +59,36 @@ public:
 private:
     uintptr_t key{0};
     wstring valueName;
-    DWORD value{0};
+    unsigned int value{0};
 };
 
 Value Register(const CallbackInfo& info) {
+#ifdef WINDOWS    
     auto detector = new RegistryChangesDetector(info[0].As<Object>(), info[1].As<Function>());
     detector->Start();
     return Number::New(info.Env(), static_cast<double>(reinterpret_cast<uintptr_t>(detector)));
+#else
+    return Number::New(info.Env(), 0.0);
+#endif
 }
 
 Value Unregister(const CallbackInfo& info) {
+#ifdef WINDOWS        
     auto detector = reinterpret_cast<RegistryChangesDetector*>(static_cast<uintptr_t>(info[0].As<Number>().DoubleValue()));
     detector->Stop();
+#endif    
     return info.Env().Undefined();
 }
 
 Number GetDWord(const CallbackInfo& info) {
-    auto default = info.Length() > 1 ? info[1].As<Number>().Uint32Value() : 0;
+#ifdef WINDOWS            
+    auto default_value = info.Length() > 1 ? info[1].As<Number>().Uint32Value() : 0;
     auto detector = reinterpret_cast<RegistryChangesDetector*>(static_cast<uintptr_t>(info[0].As<Number>().DoubleValue()));
-    auto value = detector->GetDWord(default);
+    auto value = detector->GetDWord(default_value);
     return Number::New(info.Env(), value);
+#else 
+    return Number::New(info.Env(), 0.0);
+#endif   
 }
 
 Object Init(Env env, Object exports) {
