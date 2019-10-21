@@ -1,6 +1,6 @@
 {
   "name": "registry-changes-detector",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "A node.js addon to detect changes in Windows Registry",
   "main": "./build/Release/registry-changes-detector",
   "gypfile": true,
