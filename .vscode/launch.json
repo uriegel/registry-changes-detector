@@ -1,18 +1,18 @@
 {
     "version": "0.2.0",
      "configurations": [
-         {
-             "name": "Launch C++",
-             "type": "cppvsdbg",
-             "request": "launch",
-             "program": "node",
-             "args": [ "${workspaceFolder}/dev/index.js" ],
-             "stopAtEntry": false,
-             "cwd": "${workspaceFolder}",
-             "environment": [],
-             "externalConsole": false
-         },
-         {
+        {
+           "name": "Rust (Windows)",
+           "type": "lldb",
+           "request": "launch",
+           "program": "node",
+           "args": [ "${workspaceFolder}/dev/index.js" ],
+           "stopAtEntry": false,
+           "cwd": "${workspaceRoot}",
+           "preLaunchTask": "build",
+           "environment": [],
+           "externalConsole": true
+        }, {
             "name": "Launch javascript",
             "type": "node",
             "request": "launch",

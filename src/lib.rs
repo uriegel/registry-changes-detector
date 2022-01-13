@@ -7,6 +7,8 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
 }
 
 fn register(mut cx: FunctionContext) -> JsResult<JsNumber> {
+    let key = cx.argument::<JsString>(0)?.value(&mut cx);
+    let value = cx.argument::<JsString>(1)?.value(&mut cx);
     // RegOpenKey
     Ok(cx.number(23))
 }

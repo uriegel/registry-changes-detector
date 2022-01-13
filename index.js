@@ -1,9 +1,11 @@
 const { register } = require("./index.node")
 
 function registerAddon(params, cb) {
-    params["cb"] = cb
-    let handle = register(params)
+    let handle = register(params.key, params.value)
     params["handle"] = handle
+
+// setInterval()
+
     return params
 }
 
@@ -12,6 +14,7 @@ function getDWord(params, defValue) {
 }
 
 function unregister(params) {
+    // clearInterval
 }
 
 exports.register = registerAddon
