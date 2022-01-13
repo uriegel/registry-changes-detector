@@ -13,7 +13,7 @@ public:
     RegistryChangesDetector(const Napi::Object& arg, const Napi::Function& callback) 
     : EventSourceBase(callback)
     {
-        auto keyStr = arg.Get("key").As<WString>().WValue();
+        auto keyStr = arg.Get("key").As<WString>().WValue();    
         valueName = arg.Get("value").As<WString>().WValue();
         auto type = arg.Get("type").As<WString>().WValue();
         auto pos = keyStr.find(L"\\");
