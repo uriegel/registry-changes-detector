@@ -1,5 +1,9 @@
-function register(params, cb) {
+const { register } = require("./index.node")
+
+function registerAddon(params, cb) {
     params["cb"] = cb
+    let handle = register(params)
+    params["handle"] = handle
     return params
 }
 
@@ -8,9 +12,8 @@ function getDWord(params, defValue) {
 }
 
 function unregister(params) {
-
 }
 
-exports.register = register
+exports.register = registerAddon
 exports.getDWord = getDWord
 exports.unregister = unregister
