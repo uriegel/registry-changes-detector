@@ -1,4 +1,4 @@
-
+const addon = require('../index')
 
 const eventSource = addon.register({
         key: "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",

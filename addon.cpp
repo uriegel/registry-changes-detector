@@ -17,7 +17,7 @@ public:
         valueName = arg.Get("value").As<WString>().WValue();
         auto type = arg.Get("type").As<WString>().WValue();
         auto pos = keyStr.find(L"\\");
-        auto mainKeyStr = keyStr.substr(0, pos);
+        auto  = keyStr.substr(0, pos);
         auto subKey = keyStr.substr(pos + 1);
         key = OpenKey(mainKeyStr, subKey);
     }
