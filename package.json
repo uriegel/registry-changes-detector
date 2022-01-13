@@ -1,33 +1,37 @@
 {
   "name": "registry-changes-detector",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "A node.js addon to detect changes in Windows Registry",
-  "main": "./build/Release/registry-changes-detector",
-  "gypfile": true,
-  "os":["windows-msvc-x64"],
+  "main": "index.js",
+  "os": [
+    "win32"
+  ],
+  "arch": [
+    "x64"
+  ],
   "scripts": {
-    "start": "node dev/index.js",
-    "debug": "node --nolazy --inspect-brk=9229 dev/index.js",
-    "build:dev": "node-gyp build --debug",
-    "build": "node-gyp build",
-    "rebuild:dev": "node-gyp rebuild --debug",
-    "rebuild": "node-gyp rebuild",
-    "clean": "node-gyp clean"
+    "debug": "npm run build-rust-debug && node --nolazy --inspect-brk=9229 dev/index.js",
+    "build-rust": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
+    "build-rust-debug": "npm run build-rust --",
+    "build-rust-release": "npm run build-rust -- --release"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/uriegel/registry-changes-detector.git"
   },
+  "keywords": [
+    "javascript",
+    "nodejs",
+    "addon",
+    "rust"
+  ],
   "author": "Uwe Riegel",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/uriegel/registry-changes-detector/issues"
   },
   "homepage": "https://github.com/uriegel/registry-changes-detector#readme",
-  "dependencies": {
-    "event-source-base": "^2.0.0"
-  },
   "devDependencies": {
-    "bindings": "^1.5.0"
+    "cargo-cp-artifact": "^0.1.6"
   }
 }
