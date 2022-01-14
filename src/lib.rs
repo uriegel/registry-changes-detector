@@ -4,7 +4,7 @@ use winapi:: {
     shared::minwindef::{HKEY, DWORD},
     um::{winreg::{RegOpenKeyW, HKEY_LOCAL_MACHINE, HKEY_CURRENT_USER, RegQueryValueExW, RegCloseKey, RegNotifyChangeKeyValue}, winnt::REG_NOTIFY_CHANGE_LAST_SET}
 };
-publish dry run check => README publish npm script with releasebuild step
+
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("register", register)?;

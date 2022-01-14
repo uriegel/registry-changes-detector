@@ -1,6 +1,6 @@
 {
   "name": "registry-changes-detector",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A node.js addon to detect changes in Windows Registry",
   "main": "index.js",
   "os": [
