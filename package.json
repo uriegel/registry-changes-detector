@@ -10,7 +10,7 @@
     "x64"
   ],
   "scripts": {
-    "publish": "npm run build-rust-release && npm publish",
+    "publish-release": "npm run build-rust-release && npm publish",
     "debug": "npm run build-rust-debug && node --nolazy --inspect-brk=9229 dev/index.js",
     "build-rust": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
     "build-rust-debug": "npm run build-rust --",
