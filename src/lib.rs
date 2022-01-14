@@ -1,14 +1,15 @@
 use neon::prelude::*;
-use std::ptr::null_mut;
+use std::{ptr::null_mut, thread};
 use winapi:: {
     shared::minwindef::{HKEY, DWORD},
-    um::winreg::{RegOpenKeyW, HKEY_LOCAL_MACHINE, HKEY_CURRENT_USER, RegQueryValueExW, RegCloseKey, RegNotifyChangeKeyValue}
+    um::{winreg::{RegOpenKeyW, HKEY_LOCAL_MACHINE, HKEY_CURRENT_USER, RegQueryValueExW, RegCloseKey, RegNotifyChangeKeyValue}, winnt::REG_NOTIFY_CHANGE_LAST_SET}
 };
-
+publish dry run check => README publish npm script with releasebuild step
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("register", register)?;
     cx.export_function("getDWord", get_dword)?;
+    cx.export_function("detectChange", detect_change)?;
     cx.export_function("unregister", unregister)?;
     Ok(())
 }
@@ -47,15 +48,30 @@ fn get_dword(mut cx: FunctionContext) -> JsResult<JsNumber> {
         } else { def_value }
     };
     Ok(cx.number(val))
-    
-    
+}
+
+fn detect_change(mut cx: FunctionContext) -> JsResult<JsUndefined> {
+    let key = cx.argument::<JsNumber>(0)?.value(&mut cx) as u32;
+    let callback = cx.argument::<JsFunction>(1)?.root(&mut cx);
+    let channel = cx.channel();
+    thread::spawn(move || {
+        let key = key as HKEY;
+        let status = unsafe { RegNotifyChangeKeyValue(key, 0, REG_NOTIFY_CHANGE_LAST_SET, null_mut(), 0) };
+        channel.send(move |mut cx| {
+            let this = cx.undefined();
+            let args = vec![cx.boolean(status == 0)];
+            let callback = callback.into_inner(&mut cx);
+            callback.call(&mut cx, this, args)?;
+            Ok(())
+        });
+    });
+    Ok(cx.undefined())
 }
 
 fn unregister(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     let key = cx.argument::<JsNumber>(0)?.value(&mut cx) as u32 as HKEY;
     if key as u32 != 0 { 
         unsafe { let _res = RegCloseKey(key); }
-//        RegNotifyChangeKeyValue()
     }
     Ok(cx.undefined())
 }
